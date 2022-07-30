@@ -1,0 +1,6 @@
+env/
+sheets-api.json
+secret.json
+conf.ini
+*.pyc
+json_data/
