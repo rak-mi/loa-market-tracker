@@ -3,7 +3,9 @@ import json
 
 
 urls = {
-    "Enhancement Material" : "https://www.lostarkmarket.online/api/export-market-live/North America East?category=Enhancement Material"
+    "enhancement" : "https://www.lostarkmarket.online/api/export-market-live/North America East?category=Enhancement Material",
+    "lifeskill" : "https://www.lostarkmarket.online/api/export-market-live/North America East?category=Trader",
+    "crystal" : "https://www.lostarkmarket.online/api/export-market-live/North America East?category=Currency Exchange"
 }
 
 def update_locations(type, x_pos, y_pos_start):
@@ -23,11 +25,21 @@ def update_locations(type, x_pos, y_pos_start):
         count += 1
         market_locations.append(new_json)
 
-    with open("json_data/enhancement.json", 'w', encoding='utf-8') as f:
+    with open("json_data/" + type + ".json", 'w', encoding='utf-8') as f:
         json.dump(market_locations, f, ensure_ascii=False, indent=4)
 
-def get_prices():
-    url = "https://www.lostarkmarket.online/api/export-market-live/North America East?category=Enhancement Material"
+def get_prices(url, name):
     response = requests.request("GET", url)
 
     json_data = response.json()
+    serialized_json = {}
+
+    for item in json_data:
+        serialized_json[item["id"]] = item
+
+    with open("json_data/" + name + ".json", 'w', encoding='utf-8') as f:
+        json.dump(serialized_json, f, ensure_ascii=False, indent=4)
+
+
+def update_prices():
+    pass
