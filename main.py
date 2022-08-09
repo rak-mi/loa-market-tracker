@@ -55,29 +55,14 @@ with open('json_data/lifeskill.json') as json_file:
 with open('json_data/crystal.json') as json_file:
     crystal_sheet_positions = json.load(json_file)
 
-for position in enhancement_sheet_positions:
-    time.sleep(3)
-    item_id = position["id"]
-    name = position["name"]
-    price = enhancement_prices[item_id]["avgPrice"]
-    sheet_instance.update_cell(position["y_pos"],position["x_pos"]-1, name)
-    sheet_instance.update_cell(position["y_pos"],position["x_pos"], price)
-    print("Updated " + name + " with " +  str(price))
+sheet_positions = [enhancement_sheet_positions, lifeskill_sheet_positions, crystal_sheet_positions]
 
-for position in lifeskill_sheet_positions:
-    time.sleep(3)
-    item_id = position["id"]
-    name = position["name"]
-    price = lifeskill_prices[item_id]["avgPrice"]
-    sheet_instance.update_cell(position["y_pos"],position["x_pos"]-1, name)
-    sheet_instance.update_cell(position["y_pos"],position["x_pos"], price)
-    print("Updated " + name + " with " +  str(price))
-
-for position in crystal_sheet_positions:
-    time.sleep(3)
-    item_id = position["id"]
-    name = position["name"]
-    price = crystal_prices[item_id]["avgPrice"]
-    sheet_instance.update_cell(position["y_pos"],position["x_pos"]-1, name)
-    sheet_instance.update_cell(position["y_pos"],position["x_pos"], price)
-    print("Updated " + name + " with " +  str(price))
+for positions in sheet_positions:
+    for position in positions:
+        time.sleep(3)
+        item_id = position["id"]
+        name = position["name"]
+        price = sheet_positions[item_id]["avgPrice"]
+        sheet_instance.update_cell(position["y_pos"],position["x_pos"]-1, name)
+        sheet_instance.update_cell(position["y_pos"],position["x_pos"], price)
+        print("Updated " + name + " with " +  str(price))
