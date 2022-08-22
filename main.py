@@ -60,6 +60,7 @@ with open('json_data/crystal.json') as json_file:
 sheet_positions = [enhancement_sheet_positions, lifeskill_sheet_positions, crystal_sheet_positions]
 price_json_list = [enhancement_prices, lifeskill_prices, crystal_prices]
 
+
 for x in range(0,3):
     positions= sheet_positions[x]
     price_json = price_json_list[x]
@@ -71,3 +72,6 @@ for x in range(0,3):
         sheet_instance.update_cell(position["y_pos"],position["x_pos"]-1, name)
         sheet_instance.update_cell(position["y_pos"],position["x_pos"], price)
         logging.info("Updated " + name + " with " +  str(price))
+
+sheet_instance = sheet.get_worksheet(0)
+sheet_instance.update_cell(1,15,local_time_new_date.strftime("%m/%d/%Y, %I:%M:%S%p"))
