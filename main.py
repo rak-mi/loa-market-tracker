@@ -4,12 +4,14 @@ from utils import web_scrape as ws
 import json
 import datetime
 import time
+import logging
 
 epoch = int(time.time())
 local_time_new_date = datetime.datetime.fromtimestamp(epoch)
 new_date = local_time_new_date.strftime("%d%m%Y-%H%M")
+logging.basicConfig(filename='logs.txt', filemode='w', level=logging.DEBUG)
 
-print('---' + str(new_date) + '---')
+logging.info('---' + str(new_date) + '---')
 
 scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
 
@@ -23,8 +25,8 @@ client = gspread.authorize(creds)
 sheet = client.open('NA East - Lost Ark - Market Analysis')
 sheet_instance = sheet.get_worksheet(8) #Market prices on sheet 9
 
-print('---')
-print()
+logging.info('---')
+logging.info('')
 
 
 #ws.update_locations("enhancement", 2, 1)
@@ -56,13 +58,16 @@ with open('json_data/crystal.json') as json_file:
     crystal_sheet_positions = json.load(json_file)
 
 sheet_positions = [enhancement_sheet_positions, lifeskill_sheet_positions, crystal_sheet_positions]
+price_json_list = [enhancement_prices, lifeskill_prices, crystal_prices]
 
-for positions in sheet_positions:
+for x in range(0,3):
+    positions= sheet_positions[x]
+    price_json = price_json_list[x]
     for position in positions:
-        time.sleep(3)
+        time.sleep(2.5)
         item_id = position["id"]
         name = position["name"]
-        price = sheet_positions[item_id]["avgPrice"]
+        price = price_json[item_id]["avgPrice"]
         sheet_instance.update_cell(position["y_pos"],position["x_pos"]-1, name)
         sheet_instance.update_cell(position["y_pos"],position["x_pos"], price)
-        print("Updated " + name + " with " +  str(price))
+        logging.info("Updated " + name + " with " +  str(price))
